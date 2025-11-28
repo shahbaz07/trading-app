@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.sss.tradingapp.data.local.AppTheme
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF1976D2),
@@ -18,7 +19,9 @@ private val LightColorScheme = lightColorScheme(
     background = Color(0xFFFAFAFA),
     onBackground = Color(0xFF1C1B1F),
     surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1C1B1F)
+    onSurface = Color(0xFF1C1B1F),
+    surfaceVariant = Color(0xFFF0F0F0),
+    onSurfaceVariant = Color(0xFF1C1B1F)
 )
 
 private val DarkColorScheme = darkColorScheme(
@@ -27,7 +30,9 @@ private val DarkColorScheme = darkColorScheme(
     background = Color(0xFF121212),
     onBackground = Color(0xFFE6E1E5),
     surface = Color(0xFF1E1E1E),
-    onSurface = Color(0xFFE6E1E5)
+    onSurface = Color(0xFFE6E1E5),
+    surfaceVariant = Color(0xFF1A1A1A),
+    onSurfaceVariant = Color(0xFFE6E1E5)
 )
 
 object AppColors {
@@ -42,9 +47,15 @@ object AppColors {
 
 @Composable
 fun TradingAppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    appTheme: AppTheme? = null,
     content: @Composable () -> Unit
 ) {
+    val darkTheme = when (appTheme) {
+        AppTheme.LIGHT -> false
+        AppTheme.DARK -> true
+        AppTheme.SYSTEM, null -> isSystemInDarkTheme()
+    }
+
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     val view = LocalView.current

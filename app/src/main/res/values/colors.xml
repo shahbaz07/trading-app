@@ -11,6 +11,8 @@
     <color name="background_dark">#121212</color>
     <color name="surface_light">#FFFFFF</color>
     <color name="surface_dark">#1E1E1E</color>
+    <color name="topbar_light">#F0F0F0</color>
+    <color name="topbar_dark">#1A1A1A</color>
 
     <!-- Text Colors -->
     <color name="on_background_light">#1C1B1F</color>

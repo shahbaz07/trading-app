@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تطبيق التداول</string>
+
+    <!-- Connection Status -->
+    <string name="connected">متصل</string>
+    <string name="disconnected">غير متصل</string>
+
+    <!-- Price Feed -->
+    <string name="start">بدء</string>
+    <string name="stop">إيقاف</string>
+    <string name="price_feed">تغذية الأسعار</string>
+
+    <!-- Stock List -->
+    <string name="stock_symbol">الرمز</string>
+    <string name="current_price">السعر الحالي</string>
+    <string name="price_change">تغير السعر</string>
+    <string name="no_data">لا توجد بيانات</string>
+
+    <!-- General -->
+    <string name="retry">إعادة المحاولة</string>
+    <string name="error">خطأ</string>
+    <string name="loading">جاري التحميل…</string>
+
+    <!-- Settings Menu -->
+    <string name="settings">الإعدادات</string>
+    <string name="language">اللغة</string>
+    <string name="theme">المظهر</string>
+    <string name="english">English</string>
+    <string name="arabic">العربية</string>
+    <string name="light_theme">فاتح</string>
+    <string name="dark_theme">داكن</string>
+    <string name="system_default">تلقائي</string>
+</resources>
