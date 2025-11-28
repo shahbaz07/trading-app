@@ -9,4 +9,10 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="Theme.TradingApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background_light</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.TradingApp</item>
+    </style>
+
 </resources>
