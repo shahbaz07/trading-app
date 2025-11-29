@@ -13,6 +13,7 @@ An Android application built with Jetpack Compose that displays real-time price 
 - Connection status indicator
 - Light/Dark theme support
 - Arabic/English localization
+- Portrait and Landscape orientation support
 
 ## Architecture
 
@@ -120,6 +121,7 @@ User Action → Intent → ViewModel → State Update → UI Recomposition
 - [x] Unit tests (ViewModel, Repository, Domain model)
 - [x] Light and Dark theme support
 - [x] Additional: Arabic/English localization with RTL support
+- [x] Additional: Portrait and Landscape orientation support (state preserved on rotation)
 
 ## Stock Symbols (25)
 
