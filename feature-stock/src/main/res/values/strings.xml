@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_connected">Connected</string>
+    <string name="status_disconnected">Disconnected</string>
+    <string name="action_start">Start</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_retry">Retry</string>
+    <string name="action_start_tracking">Start Tracking</string>
+    <string name="connecting">Connecting…</string>
+    <string name="error_occurred">Error Occurred</string>
+    <string name="welcome_message">Real-Time Stock Tracker</string>
+    <string name="start_tracking_hint">Press Start to begin tracking 25 stock prices in real-time</string>
+</resources>

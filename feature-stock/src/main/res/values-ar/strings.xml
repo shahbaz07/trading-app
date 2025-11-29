@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="status_connected">متصل</string>
+    <string name="status_disconnected">غير متصل</string>
+    <string name="action_start">بدء</string>
+    <string name="action_stop">إيقاف</string>
+    <string name="action_retry">إعادة المحاولة</string>
+    <string name="action_start_tracking">بدء التتبع</string>
+    <string name="connecting">جاري الاتصال…</string>
+    <string name="error_occurred">حدث خطأ</string>
+    <string name="welcome_message">متتبع الأسهم المباشر</string>
+    <string name="start_tracking_hint">اضغط على بدء لتتبع 25 سهماً في الوقت الحقيقي</string>
+</resources>

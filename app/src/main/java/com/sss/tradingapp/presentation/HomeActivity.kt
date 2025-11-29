@@ -1,6 +1,5 @@
 package com.sss.tradingapp.presentation
 
-import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,8 +21,8 @@ import com.sss.tradingapp.data.local.AppTheme
 import com.sss.tradingapp.presentation.ui.components.AppTopBar
 import com.sss.tradingapp.presentation.ui.theme.TradingAppTheme
 import com.sss.tradingapp.presentation.viewmodel.SettingsViewModel
+import com.sss.feature.stock.presentation.ui.StockListScreen
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.Locale
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -63,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
                             .padding(paddingValues),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        // PriceTrackerScreen will be added here
+                        StockListScreen()
                     }
                 }
             }
@@ -79,13 +78,4 @@ class HomeActivity : AppCompatActivity() {
         AppCompatDelegate.setApplicationLocales(localeList)
     }
 
-    private fun getSystemLanguage(): AppLanguage {
-        val systemLocale = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            resources.configuration.locales[0]
-        } else {
-            @Suppress("DEPRECATION")
-            resources.configuration.locale
-        }
-        return if (systemLocale.language == "ar") AppLanguage.ARABIC else AppLanguage.ENGLISH
-    }
 }

@@ -2,7 +2,7 @@ package com.sss.tradingapp.presentation.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,11 +43,11 @@ fun AppTopBar(
                 fontWeight = FontWeight.Bold
             )
         },
-        navigationIcon = {
+        actions = {
             Box {
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
-                        imageVector = Icons.Default.Menu,
+                        imageVector = Icons.Default.Settings,
                         contentDescription = stringResource(R.string.settings)
                     )
                 }
@@ -195,7 +195,7 @@ fun AppTopBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            navigationIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            actionIconContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         )
     )
 }

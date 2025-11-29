@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Trading App"
 include(":app")
+include(":core")
+include(":feature-stock")
  
