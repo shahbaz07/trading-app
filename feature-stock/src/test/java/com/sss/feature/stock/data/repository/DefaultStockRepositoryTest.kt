@@ -3,12 +3,11 @@ package com.sss.feature.stock.data.repository
 import app.cash.turbine.test
 import com.sss.core.network.WebSocketState
 import com.sss.feature.stock.data.model.StockPriceDto
-import com.sss.feature.stock.data.remote.StockWebSocketService
+import com.sss.feature.stock.data.remote.StockService
 import com.sss.feature.stock.domain.model.PriceChange
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -22,14 +21,15 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import java.math.BigDecimal
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class StockRepositoryImplTest {
+class DefaultStockRepositoryTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private lateinit var webSocketService: StockWebSocketService
-    private lateinit var repository: StockRepositoryImpl
+    private lateinit var stockService: StockService
+    private lateinit var repository: DefaultStockRepository
 
     private val priceUpdatesFlow = MutableSharedFlow<StockPriceDto>()
     private val connectionStateFlow = MutableStateFlow<WebSocketState>(WebSocketState.Disconnected())
@@ -38,11 +38,11 @@ class StockRepositoryImplTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
 
-        webSocketService = mockk(relaxed = true)
-        every { webSocketService.priceUpdates } returns priceUpdatesFlow
-        every { webSocketService.connectionState } returns connectionStateFlow
+        stockService = mockk(relaxed = true)
+        every { stockService.priceUpdates } returns priceUpdatesFlow
+        every { stockService.connectionState } returns connectionStateFlow
 
-        repository = StockRepositoryImpl(webSocketService)
+        repository = DefaultStockRepository(stockService)
     }
 
     @After
@@ -78,7 +78,7 @@ class StockRepositoryImplTest {
             priceUpdatesFlow.emit(StockPriceDto("AAPL", 175.00))
             val secondUpdate = awaitItem()
             assertEquals(PriceChange.UP, secondUpdate[0].priceChange)
-            assertEquals(170.00, secondUpdate[0].previousPrice)
+            assertEquals(BigDecimal("170.0"), secondUpdate[0].previousPrice)
 
             priceUpdatesFlow.emit(StockPriceDto("AAPL", 165.00))
             val thirdUpdate = awaitItem()
@@ -89,20 +89,19 @@ class StockRepositoryImplTest {
     }
 
     @Test
-    fun `startPriceFeed should call webSocketService start`() = runTest {
-        val scope = CoroutineScope(testDispatcher)
-        repository.startPriceFeed(scope)
-        verify { webSocketService.start(scope) }
+    fun `startPriceFeed should call stockService start`() = runTest {
+        repository.startPriceFeed()
+        verify { stockService.start() }
     }
 
     @Test
-    fun `stopPriceFeed should call webSocketService stop`() = runTest {
+    fun `stopPriceFeed should call stockService stop`() = runTest {
         repository.stopPriceFeed()
-        verify { webSocketService.stop() }
+        verify { stockService.stop() }
     }
 
     @Test
-    fun `connectionState should expose webSocketService state`() = runTest {
+    fun `connectionState should expose stockService state`() = runTest {
         connectionStateFlow.value = WebSocketState.Connected
         assertEquals(WebSocketState.Connected, repository.connectionState.value)
 

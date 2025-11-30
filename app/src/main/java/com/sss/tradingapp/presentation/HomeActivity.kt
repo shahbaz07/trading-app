@@ -16,10 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sss.tradingapp.data.local.AppLanguage
-import com.sss.tradingapp.data.local.AppTheme
+import com.sss.tradingapp.domain.model.AppLanguage
 import com.sss.tradingapp.presentation.ui.components.AppTopBar
 import com.sss.tradingapp.presentation.ui.theme.TradingAppTheme
+import com.sss.tradingapp.presentation.viewmodel.SettingsIntent
 import com.sss.tradingapp.presentation.viewmodel.SettingsViewModel
 import com.sss.feature.stock.presentation.ui.StockListScreen
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,22 +35,19 @@ class HomeActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         setContent {
-            val currentTheme by settingsViewModel.currentTheme.collectAsStateWithLifecycle()
-            val currentLanguage by settingsViewModel.currentLanguage.collectAsStateWithLifecycle()
+            val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
 
-            val effectiveTheme = currentTheme ?: AppTheme.SYSTEM
-
-            TradingAppTheme(appTheme = effectiveTheme) {
+            TradingAppTheme(appTheme = uiState.theme) {
                 Scaffold(
                     topBar = {
                         AppTopBar(
-                            currentTheme = currentTheme,
-                            currentLanguage = currentLanguage,
+                            currentTheme = uiState.theme,
+                            currentLanguage = uiState.language,
                             onThemeChange = { theme ->
-                                settingsViewModel.setTheme(theme)
+                                settingsViewModel.processIntent(SettingsIntent.ChangeTheme(theme))
                             },
                             onLanguageChange = { language ->
-                                settingsViewModel.setLanguage(language)
+                                settingsViewModel.processIntent(SettingsIntent.ChangeLanguage(language))
                                 applyLanguage(language)
                             }
                         )
@@ -77,5 +74,4 @@ class HomeActivity : AppCompatActivity() {
         }
         AppCompatDelegate.setApplicationLocales(localeList)
     }
-
 }

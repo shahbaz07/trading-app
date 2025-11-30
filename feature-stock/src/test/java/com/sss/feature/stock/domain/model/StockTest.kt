@@ -2,6 +2,7 @@ package com.sss.feature.stock.domain.model
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.math.BigDecimal
 
 class StockTest {
 
@@ -9,8 +10,8 @@ class StockTest {
     fun `price change should be UP when current price is higher than previous`() {
         val stock = Stock(
             symbol = "AAPL",
-            price = 175.50,
-            previousPrice = 170.00
+            price = BigDecimal("175.50"),
+            previousPrice = BigDecimal("170.00")
         )
         assertEquals(PriceChange.UP, stock.priceChange)
     }
@@ -19,8 +20,8 @@ class StockTest {
     fun `price change should be DOWN when current price is lower than previous`() {
         val stock = Stock(
             symbol = "AAPL",
-            price = 165.00,
-            previousPrice = 170.00
+            price = BigDecimal("165.00"),
+            previousPrice = BigDecimal("170.00")
         )
         assertEquals(PriceChange.DOWN, stock.priceChange)
     }
@@ -29,8 +30,8 @@ class StockTest {
     fun `price change should be NEUTRAL when prices are equal`() {
         val stock = Stock(
             symbol = "AAPL",
-            price = 170.00,
-            previousPrice = 170.00
+            price = BigDecimal("170.00"),
+            previousPrice = BigDecimal("170.00")
         )
         assertEquals(PriceChange.NEUTRAL, stock.priceChange)
     }
@@ -39,7 +40,7 @@ class StockTest {
     fun `price change should be NEUTRAL when no previous price`() {
         val stock = Stock(
             symbol = "AAPL",
-            price = 170.00,
+            price = BigDecimal("170.00"),
             previousPrice = null
         )
         assertEquals(PriceChange.NEUTRAL, stock.priceChange)
@@ -49,9 +50,9 @@ class StockTest {
     fun `stock should have correct symbol and price`() {
         val stock = Stock(
             symbol = "GOOG",
-            price = 140.25
+            price = BigDecimal("140.25")
         )
         assertEquals("GOOG", stock.symbol)
-        assertEquals(140.25, stock.price, 0.001)
+        assertEquals(BigDecimal("140.25"), stock.price)
     }
 }

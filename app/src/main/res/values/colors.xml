@@ -29,7 +29,7 @@
     <color name="connection_active">#4CAF50</color>
     <color name="connection_inactive">#F44336</color>
 
-    <!-- Flash Animation -->
-    <color name="flash_green">#334CAF50</color>
-    <color name="flash_red">#33F44336</color>
+    <!-- Flash Animation (text color) -->
+    <color name="flash_green">#4CAF50</color>
+    <color name="flash_red">#F44336</color>
 </resources>

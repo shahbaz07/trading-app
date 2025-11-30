@@ -2,7 +2,6 @@ package com.sss.feature.stock.presentation.viewmodel
 
 import app.cash.turbine.test
 import com.sss.core.network.WebSocketState
-import com.sss.feature.stock.domain.model.PriceChange
 import com.sss.feature.stock.domain.model.Stock
 import com.sss.feature.stock.domain.usecase.GetConnectionStateUseCase
 import com.sss.feature.stock.domain.usecase.GetStockPricesUseCase
@@ -25,6 +24,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import java.math.BigDecimal
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class StockViewModelTest {
@@ -82,8 +82,8 @@ class StockViewModelTest {
     @Test
     fun `start feed should update state to feed active`() = runTest {
         val stocks = listOf(
-            Stock("AAPL", 175.50),
-            Stock("GOOG", 140.25)
+            Stock("AAPL", BigDecimal("175.50")),
+            Stock("GOOG", BigDecimal("140.25"))
         )
         every { getStockPricesUseCase() } returns flowOf(stocks)
 
@@ -95,7 +95,7 @@ class StockViewModelTest {
 
         val state = viewModel.uiState.value
         assertTrue(state.isFeedActive)
-        verify { startPriceFeedUseCase(any()) }
+        verify { startPriceFeedUseCase() }
     }
 
     @Test
@@ -164,8 +164,8 @@ class StockViewModelTest {
     @Test
     fun `stock updates should be reflected in ui state`() = runTest {
         val stocks = listOf(
-            Stock("AAPL", 175.50, 170.00),
-            Stock("GOOG", 140.25, 145.00)
+            Stock("AAPL", BigDecimal("175.50"), BigDecimal("170.00")),
+            Stock("GOOG", BigDecimal("140.25"), BigDecimal("145.00"))
         )
         every { getStockPricesUseCase() } returns flowOf(stocks)
 
@@ -178,6 +178,6 @@ class StockViewModelTest {
         val state = viewModel.uiState.value
         assertEquals(2, state.stocks.size)
         assertEquals("AAPL", state.stocks[0].symbol)
-        assertEquals(175.50, state.stocks[0].price, 0.01)
+        assertEquals(BigDecimal("175.50"), state.stocks[0].price)
     }
 }

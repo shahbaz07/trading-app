@@ -1,6 +1,7 @@
 package com.sss.tradingapp.presentation.ui.theme
 
 import android.app.Activity
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -11,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.sss.tradingapp.data.local.AppTheme
+import com.sss.tradingapp.domain.model.AppTheme
 
 private val LightColorScheme = lightColorScheme(
     primary = Color(0xFF1976D2),
@@ -62,8 +63,14 @@ fun TradingAppTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            val insetsController = WindowCompat.getInsetsController(window, view)
+            insetsController.isAppearanceLightStatusBars = !darkTheme
+            insetsController.isAppearanceLightNavigationBars = !darkTheme
+            @Suppress("DEPRECATION")
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+                window.statusBarColor = colorScheme.primary.toArgb()
+                window.navigationBarColor = colorScheme.background.toArgb()
+            }
         }
     }
 

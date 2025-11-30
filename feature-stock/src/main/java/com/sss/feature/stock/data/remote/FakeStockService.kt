@@ -4,7 +4,9 @@ import com.sss.core.network.WebSocketClient
 import com.sss.core.network.WebSocketState
 import com.sss.feature.stock.data.model.StockPriceDto
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,23 +16,26 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 import javax.inject.Singleton
 import kotlin.random.Random
 
 @Singleton
-class StockWebSocketService @Inject constructor(
-    private val webSocketClient: WebSocketClient
-) {
+class FakeStockService @Inject constructor(
+    private val webSocketClient: WebSocketClient,
+    @param:Named("websocket_url") private val webSocketUrl: String
+) : StockService {
+
     private val json = Json { ignoreUnknownKeys = true }
 
     private val _priceUpdates = MutableSharedFlow<StockPriceDto>(extraBufferCapacity = 64)
-    val priceUpdates: Flow<StockPriceDto> = _priceUpdates.asSharedFlow()
+    override val priceUpdates: Flow<StockPriceDto> = _priceUpdates.asSharedFlow()
 
-    val connectionState: StateFlow<WebSocketState> = webSocketClient.state
+    override val connectionState: StateFlow<WebSocketState> = webSocketClient.state
 
-    private var connectionJob: Job? = null
-    private var priceGeneratorJob: Job? = null
+    private var serviceScope: CoroutineScope? = null
 
     private val symbols = listOf(
         "AAPL", "GOOG", "TSLA", "AMZN", "MSFT", "NVDA", "META", "NFLX", "AMD", "INTC",
@@ -46,21 +51,23 @@ class StockWebSocketService @Inject constructor(
         "ZM" to 70.0, "SHOP" to 75.0, "SQ" to 80.0, "COIN" to 150.0, "HOOD" to 12.0
     )
 
-    fun start(scope: CoroutineScope) {
-        if (connectionJob?.isActive == true) return
+    override fun start() {
+        if (serviceScope != null) return
 
-        connectionJob = scope.launch {
-            webSocketClient.connect(WEBSOCKET_URL).collect { message ->
+        serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+        serviceScope?.launch {
+            webSocketClient.connect(webSocketUrl).collect { message ->
                 try {
                     val stockPrice = json.decodeFromString<StockPriceDto>(message)
                     _priceUpdates.emit(stockPrice)
                 } catch (e: Exception) {
-                    // Log parsing error if needed
+                    Timber.e(e, "Failed to parse message: $message")
                 }
             }
         }
 
-        priceGeneratorJob = scope.launch {
+        serviceScope?.launch {
             while (isActive) {
                 if (webSocketClient.isConnected()) {
                     symbols.forEach { symbol ->
@@ -79,16 +86,13 @@ class StockWebSocketService @Inject constructor(
         }
     }
 
-    fun stop() {
-        priceGeneratorJob?.cancel()
-        priceGeneratorJob = null
-        connectionJob?.cancel()
-        connectionJob = null
+    override fun stop() {
+        serviceScope?.cancel()
+        serviceScope = null
         webSocketClient.disconnect()
     }
 
     companion object {
-        private const val WEBSOCKET_URL = "wss://ws.postman-echo.com/raw"
         private const val PRICE_UPDATE_INTERVAL_MS = 2000L
     }
 }

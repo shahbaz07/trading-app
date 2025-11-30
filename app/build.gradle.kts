@@ -25,12 +25,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "WEBSOCKET_URL", "\"wss://ws.postman-echo.com/raw\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "WEBSOCKET_URL", "\"wss://ws.postman-echo.com/raw\"")
         }
     }
 
@@ -45,6 +49,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     packaging {
@@ -84,6 +89,9 @@ dependencies {
 
     // OkHttp (WebSocket)
     implementation(libs.okhttp)
+
+    // Timber
+    implementation(libs.timber)
 
     // Kotlinx Coroutines
     implementation(libs.kotlinx.coroutines.android)

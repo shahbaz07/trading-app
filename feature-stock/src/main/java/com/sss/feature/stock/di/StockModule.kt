@@ -1,6 +1,8 @@
 package com.sss.feature.stock.di
 
-import com.sss.feature.stock.data.repository.StockRepositoryImpl
+import com.sss.feature.stock.data.remote.FakeStockService
+import com.sss.feature.stock.data.remote.StockService
+import com.sss.feature.stock.data.repository.DefaultStockRepository
 import com.sss.feature.stock.domain.repository.StockRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +16,9 @@ abstract class StockModule {
 
     @Binds
     @Singleton
-    abstract fun bindStockRepository(impl: StockRepositoryImpl): StockRepository
+    abstract fun bindStockRepository(impl: DefaultStockRepository): StockRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindStockService(impl: FakeStockService): StockService
 }

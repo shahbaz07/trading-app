@@ -25,9 +25,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -99,48 +100,38 @@ private fun ConnectionStatusBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(12.dp)
-                    .clip(CircleShape)
-                    .background(
-                        if (isConnected) Color(0xFF4CAF50) else Color(0xFFF44336)
-                    )
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = if (isConnected) {
-                    stringResource(R.string.status_connected)
-                } else {
-                    stringResource(R.string.status_disconnected)
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
+        Box(
+            modifier = Modifier
+                .size(12.dp)
+                .clip(CircleShape)
+                .background(
+                    if (isConnected) colorResource(R.color.connection_active)
+                    else colorResource(R.color.connection_inactive)
+                )
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(
+                if (isConnected) R.string.status_connected else R.string.status_disconnected
+            ),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.weight(1f)
+        )
         Button(
             onClick = onToggle,
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isFeedActive) {
-                    Color(0xFFF44336)
-                } else {
-                    Color(0xFF4CAF50)
-                }
+                containerColor = colorResource(
+                    if (isFeedActive) R.color.price_down else R.color.price_up
+                )
             )
         ) {
             Text(
-                text = if (isFeedActive) {
-                    stringResource(R.string.action_stop)
-                } else {
-                    stringResource(R.string.action_start)
-                }
+                text = stringResource(
+                    if (isFeedActive) R.string.action_stop else R.string.action_start
+                )
             )
         }
     }
@@ -148,20 +139,17 @@ private fun ConnectionStatusBar(
 
 @Composable
 private fun LoadingContent() {
-    Box(
+    Column(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator()
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.connecting),
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        CircularProgressIndicator()
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.connecting),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
@@ -170,29 +158,27 @@ private fun ErrorContent(
     error: String,
     onRetry: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.error_occurred),
-                style = MaterialTheme.typography.titleMedium,
-                color = Color(0xFFF44336)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = error,
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = onRetry) {
-                Text(text = stringResource(R.string.action_retry))
-            }
+        Text(
+            text = stringResource(R.string.error_occurred),
+            style = MaterialTheme.typography.titleMedium,
+            color = colorResource(R.color.price_down)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = error,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = onRetry) {
+            Text(text = stringResource(R.string.action_retry))
         }
     }
 }
@@ -201,30 +187,79 @@ private fun ErrorContent(
 private fun EmptyContent(
     onStart: () -> Unit
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(32.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.welcome_message),
-                style = MaterialTheme.typography.titleMedium,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.start_tracking_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(onClick = onStart) {
-                Text(text = stringResource(R.string.action_start_tracking))
-            }
+        Text(
+            text = stringResource(R.string.welcome_message),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.start_tracking_hint),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = onStart) {
+            Text(text = stringResource(R.string.action_start_tracking))
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ConnectionStatusBarConnectedPreview() {
+    MaterialTheme {
+        ConnectionStatusBar(
+            isConnected = true,
+            isFeedActive = true,
+            onToggle = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ConnectionStatusBarDisconnectedPreview() {
+    MaterialTheme {
+        ConnectionStatusBar(
+            isConnected = false,
+            isFeedActive = false,
+            onToggle = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoadingContentPreview() {
+    MaterialTheme {
+        LoadingContent()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun ErrorContentPreview() {
+    MaterialTheme {
+        ErrorContent(
+            error = "Connection failed. Please check your internet connection.",
+            onRetry = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun EmptyContentPreview() {
+    MaterialTheme {
+        EmptyContent(onStart = {})
     }
 }

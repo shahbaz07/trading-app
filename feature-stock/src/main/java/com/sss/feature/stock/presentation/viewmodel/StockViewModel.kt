@@ -64,7 +64,7 @@ class StockViewModel @Inject constructor(
         if (_uiState.value.isFeedActive) return
 
         _uiState.update { it.copy(isFeedActive = true, isLoading = true, error = null) }
-        startPriceFeedUseCase(viewModelScope)
+        startPriceFeedUseCase()
 
         stockCollectionJob = viewModelScope.launch {
             getStockPricesUseCase()

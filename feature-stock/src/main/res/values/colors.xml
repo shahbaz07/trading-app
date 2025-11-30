@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Price Colors -->
+    <color name="price_up">#4CAF50</color>
+    <color name="price_down">#F44336</color>
+    <color name="price_neutral">#9E9E9E</color>
+
+    <!-- Connection Status -->
+    <color name="connection_active">#4CAF50</color>
+    <color name="connection_inactive">#F44336</color>
+
+    <!-- Flash Animation (text color) -->
+    <color name="flash_green">#4CAF50</color>
+    <color name="flash_red">#F44336</color>
+</resources>

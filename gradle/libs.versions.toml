@@ -22,6 +22,9 @@ hiltNavigationCompose = "1.2.0"
 # OkHttp (WebSocket)
 okhttp = "4.12.0"
 
+# Timber
+timber = "5.0.1"
+
 # Kotlinx
 coroutines = "1.9.0"
 serializationJson = "1.7.3"
@@ -62,6 +65,9 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 
 # OkHttp (WebSocket)
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+
+# Timber
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 # Kotlinx Coroutines
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
