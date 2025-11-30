@@ -2,6 +2,12 @@
 
 An Android application built with Jetpack Compose that displays real-time price updates for 25 stock symbols using WebSocket connection.
 
+## Demo
+
+<p align="center">
+  <img src="screenshots/demo.gif" width="300" alt="App Demo"/>
+</p>
+
 ## Features
 
 - Real-time price tracking for 25 stock symbols
