@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Colors -->
-    <color name="primary_light">#1976D2</color>
-    <color name="primary_dark">#90CAF9</color>
-    <color name="on_primary_light">#FFFFFF</color>
-    <color name="on_primary_dark">#000000</color>
-
-    <!-- Background Colors -->
-    <color name="background_light">#FAFAFA</color>
-    <color name="background_dark">#121212</color>
-    <color name="surface_light">#FFFFFF</color>
-    <color name="surface_dark">#1E1E1E</color>
-    <color name="topbar_light">#F0F0F0</color>
-    <color name="topbar_dark">#1A1A1A</color>
-
-    <!-- Text Colors -->
-    <color name="on_background_light">#1C1B1F</color>
-    <color name="on_background_dark">#E6E1E5</color>
-    <color name="on_surface_light">#1C1B1F</color>
-    <color name="on_surface_dark">#E6E1E5</color>
+    <!-- Theme Colors (Light) -->
+    <color name="primary">#1976D2</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="background">#FAFAFA</color>
+    <color name="on_background">#1C1B1F</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="on_surface">#1C1B1F</color>
+    <color name="topbar">#F0F0F0</color>
 
     <!-- Price Colors -->
     <color name="price_up">#4CAF50</color>
@@ -29,7 +18,7 @@
     <color name="connection_active">#4CAF50</color>
     <color name="connection_inactive">#F44336</color>
 
-    <!-- Flash Animation (text color) -->
+    <!-- Flash Animation -->
     <color name="flash_green">#4CAF50</color>
     <color name="flash_red">#F44336</color>
 </resources>

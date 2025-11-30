@@ -2,7 +2,6 @@ package com.sss.tradingapp.presentation
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -17,6 +16,7 @@ import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sss.tradingapp.domain.model.AppLanguage
+import com.sss.tradingapp.domain.model.AppTheme
 import com.sss.tradingapp.presentation.ui.components.AppTopBar
 import com.sss.tradingapp.presentation.ui.theme.TradingAppTheme
 import com.sss.tradingapp.presentation.viewmodel.SettingsIntent
@@ -32,7 +32,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         setContent {
             val uiState by settingsViewModel.uiState.collectAsStateWithLifecycle()
@@ -45,6 +44,7 @@ class HomeActivity : AppCompatActivity() {
                             currentLanguage = uiState.language,
                             onThemeChange = { theme ->
                                 settingsViewModel.processIntent(SettingsIntent.ChangeTheme(theme))
+                                applyTheme(theme)
                             },
                             onLanguageChange = { language ->
                                 settingsViewModel.processIntent(SettingsIntent.ChangeLanguage(language))
@@ -64,6 +64,15 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun applyTheme(theme: AppTheme) {
+        val nightMode = when (theme) {
+            AppTheme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+            AppTheme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
+            AppTheme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        AppCompatDelegate.setDefaultNightMode(nightMode)
     }
 
     private fun applyLanguage(language: AppLanguage) {

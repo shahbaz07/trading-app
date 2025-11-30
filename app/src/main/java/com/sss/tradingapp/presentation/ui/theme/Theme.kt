@@ -8,43 +8,12 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.colorResource
 import androidx.core.view.WindowCompat
+import com.sss.tradingapp.R
 import com.sss.tradingapp.domain.model.AppTheme
-
-private val LightColorScheme = lightColorScheme(
-    primary = Color(0xFF1976D2),
-    onPrimary = Color(0xFFFFFFFF),
-    background = Color(0xFFFAFAFA),
-    onBackground = Color(0xFF1C1B1F),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1C1B1F),
-    surfaceVariant = Color(0xFFF0F0F0),
-    onSurfaceVariant = Color(0xFF1C1B1F)
-)
-
-private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF90CAF9),
-    onPrimary = Color(0xFF000000),
-    background = Color(0xFF121212),
-    onBackground = Color(0xFFE6E1E5),
-    surface = Color(0xFF1E1E1E),
-    onSurface = Color(0xFFE6E1E5),
-    surfaceVariant = Color(0xFF1A1A1A),
-    onSurfaceVariant = Color(0xFFE6E1E5)
-)
-
-object AppColors {
-    val PriceUp = Color(0xFF4CAF50)
-    val PriceDown = Color(0xFFF44336)
-    val PriceNeutral = Color(0xFF9E9E9E)
-    val ConnectionActive = Color(0xFF4CAF50)
-    val ConnectionInactive = Color(0xFFF44336)
-    val FlashGreen = Color(0x334CAF50)
-    val FlashRed = Color(0x33F44336)
-}
 
 @Composable
 fun TradingAppTheme(
@@ -57,7 +26,29 @@ fun TradingAppTheme(
         AppTheme.SYSTEM, null -> isSystemInDarkTheme()
     }
 
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val colorScheme = if (darkTheme) {
+        darkColorScheme(
+            primary = colorResource(R.color.primary),
+            onPrimary = colorResource(R.color.on_primary),
+            background = colorResource(R.color.background),
+            onBackground = colorResource(R.color.on_background),
+            surface = colorResource(R.color.surface),
+            onSurface = colorResource(R.color.on_surface),
+            surfaceVariant = colorResource(R.color.topbar),
+            onSurfaceVariant = colorResource(R.color.on_surface)
+        )
+    } else {
+        lightColorScheme(
+            primary = colorResource(R.color.primary),
+            onPrimary = colorResource(R.color.on_primary),
+            background = colorResource(R.color.background),
+            onBackground = colorResource(R.color.on_background),
+            surface = colorResource(R.color.surface),
+            onSurface = colorResource(R.color.on_surface),
+            surfaceVariant = colorResource(R.color.topbar),
+            onSurfaceVariant = colorResource(R.color.on_surface)
+        )
+    }
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -68,7 +59,7 @@ fun TradingAppTheme(
             insetsController.isAppearanceLightNavigationBars = !darkTheme
             @Suppress("DEPRECATION")
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-                window.statusBarColor = colorScheme.primary.toArgb()
+                window.statusBarColor = colorScheme.surfaceVariant.toArgb()
                 window.navigationBarColor = colorScheme.background.toArgb()
             }
         }
